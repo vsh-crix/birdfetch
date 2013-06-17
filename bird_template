@@ -1,0 +1,10 @@
+filter bgp_in_@@AS@@                                                                                                                       
+prefix set allnet;                                                                                                                                       
+{                                                                                                                                                        
+  allnet = @@NET@@                                                                                                           
+  if ! (net ~ allnet) then reject;                                                                                                                       
+  bgp_community = -empty-;                                                                                                                               
+  bgp_community.add((39751,39751));                                                                                                                      
+  accept;                                                                                                                                                
+}                                 
+
