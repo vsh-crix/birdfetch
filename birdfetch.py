@@ -14,28 +14,13 @@ import time
 import email, mailer
 import telnetlib, subprocess
 
+try:
+    from birdfetchconfig import *
+except Exception as e:
+    import warnings
+    warnings.warn("Unable import local settings [%s]: %s" % (type(e),  e))
+    os.sys.exit(1)
 
-SPOOLDIR="/var/tmp/birdfetch"
-
-ASFILE="downstream.list"
-
-_list =  os.path.join('/usr/local/etc', 'rs1.crimea-ix.net')     
-
-bird_template = os.path.join('/usr/local/etc', 'bird_template')                                                                                                                           
-BIRD_OUTGOING_TMP = os.path.join('/usr/local/etc/')   
-
-OLD_DIR="old"
-CUR_DIR="current"
-DIFF_DIR="diff"
-DIFFFILE = None                # None for autoformat file (date), or some name
-
-flagEmailSend = True
-
-emailSender = ""
-emailRecepient = ""
-emailSubject = "ripe exchange"
-emailEncoding = "UTF-8"
-emailRelay = ""
 
 class ASGet:
     
@@ -75,7 +60,7 @@ class ASGet:
 
         self.tn = None
 
-        fd = open(_list, "rb")    
+        fd = open(LIST, "rb")    
         fcontent = fd.readlines()
         fd.close()
 
@@ -270,7 +255,10 @@ class ASGet:
 
     def bgpGenList(self, currentAS=None):
 
-        _asPrefixlist = subprocess.Popen(["/usr/bin/bgpq", "-H", "-P", "-c", "-q", "-A", "-R 24", "-l%s" % currentAS,  currentAS], stdout = subprocess.PIPE)
+        if BGPQ3:
+            _asPrefixlist = subprocess.Popen(["/usr/local/bin/bgpq3",  "-3", "-P", "-R 24", "-l%s" % currentAS,  currentAS], stdout = subprocess.PIPE)
+        else:
+            _asPrefixlist = subprocess.Popen(["/usr/bin/bgpq", "-H", "-P", "-c", "-q", "-A", "-R 24", "-l%s" % currentAS,  currentAS], stdout = subprocess.PIPE)
         asPrefixlist = _asPrefixlist.stdout.read().splitlines()
         out = []
         _out = ""
@@ -278,7 +266,8 @@ class ASGet:
         dataBlock = {} 
     
         for i in asPrefixlist:
-            if i.startswith("!"):        continue
+            if i.startswith("!"):       continue
+            if i.startswith("no"):      continue
             else:
                 i = i.split()[4]
                 l = i.split("/")[1]
