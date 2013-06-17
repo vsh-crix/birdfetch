@@ -82,7 +82,7 @@ class ASGet:
         for i in fcontent:        
             try:
                 self.asList.append(i)
-            except Exception, ex:
+            except Exception as ex:
                 print >>sys.stderr, "Unable to save AS-SET  to list '%s'. Error: %s" % (self.asList, ex)
                 sys.exit(-1)
 
@@ -110,18 +110,17 @@ class ASGet:
                     _fcontent = _fcontent.replace('@@NET@@', i[l])
         
                 fd=open("%s/%s" % (BIRD_OUTGOING_TMP, l.lower() + ".conf"), 'wb') 
-                    fd.write(_fcontent)                                                                                                                              
-                    fd.close() 
-            
-                self.downstreamList.append("%s\t%s" % (l, i[l]))   
+                fd.write(_fcontent)
+                fd.close()
+                self.downstreamList.append("%s\t%s" % (l, i[l]))
 
     def makedirs(self, dirPath=None):
         if dirPath is None:        return
         try:
             if os.path.exists(dirPath) is False:
                 os.makedirs(dirPath)
-                os.chmod(dirPath, 0755)
-        except Exception, ex:
+                os.chmod(dirPath, 0o755)
+        except Exception as ex:
             print >>sys.stderr,"Unable to create a directory '%s'. Error: %s" % (dirPath, ex)
             sys.exit(-1)
 
@@ -134,8 +133,8 @@ class ASGet:
             for _as in self.downstreamList:
                 fp.write("%s\n" % _as)
             fp.close()
-            os.chmod(filePath, 0644)
-        except Exception, ex:
+            os.chmod(filePath, 0o644)
+        except Exception as ex:
             print >>sys.stderr, "Unable to save downstream list to file '%s'. Error: %s" % (filePath, ex)
             sys.exit(-1)
     
@@ -159,7 +158,7 @@ class ASGet:
             fp = open(currentASPath, "rb")
             f2 = fp.readlines()
             fp.close()
-        except Exception, ex:
+        except Exception as ex:
             print >>sys.stderr, "Unable to read files '%s' and '%s' while making a diff. Error: %s" % (oldASPath, currentASPath, ex)
             sys.exit(-1)
 
@@ -179,7 +178,7 @@ class ASGet:
             for line in difflib.unified_diff(f1, f2, fromfile=oldASPath, tofile=currentASPath):
                 f1 = fp.write(line)
             fp.close()
-        except Exception, ex:
+        except Exception as ex:
             print >>sys.stderr, "Unable to make a diff between '%s' and '%s' and save to %s. Error: %s" % (oldASPath, currentASPath, self.diffFile, ex)
             sys.exit(-1)
 
@@ -188,7 +187,7 @@ class ASGet:
             fp = open(self.diffFile, "rb")
             _diffList = fp.readlines()
             fp.close()
-        except Exception, ex:
+        except Exception as ex:
             print >>sys.stderr, "Unable to load a diff from '%s'. Error: %s" % (self.diffFile, ex)
             sys.exit(-1)
             
@@ -264,8 +263,8 @@ class ASGet:
             fp = open(oldASPath, "wb")
             fp.write(fcontString)
             fp.close()
-            os.chmod(oldASPath, 0644)
-        except Exception, ex:
+            os.chmod(oldASPath, 0o644)
+        except Exception as ex:
             print >>sys.stderr, "Unable to copy current as list to old'. Error: %s" % ex
             sys.exit(-1)
 
@@ -316,7 +315,7 @@ class ASGet:
         sender = mailer.Mailer(self.emailRelay)
         try:
             sender.send(message)
-        except Exception, ex:
+        except Exception as ex:
             print >>sys.stderr, "Unable to send email to %s. Error: %s" % (fieldRecipient, ex)
             sys.exit(-1)
             
@@ -325,16 +324,16 @@ class ASGet:
         if self.httpPage is None:        pass
         else:
             for i in self.httpLines:
-                print i
+                print(i)
 
 
     def printDownstreamList(self):
         if len(self.downstreamList) == 0:
-            print "No links"
+            print ("No links")
             return
         
         for _as in self.downstreamList:
-            print _as
+            print (_as)
 
 def main():
 
