@@ -213,6 +213,7 @@ class ASGet:
         self.diffOutStream += "Diff List:"
         if diffList is None or len(diffList) == 2:
             self.diffOutStream += " No differences\r\n"
+	    return
         else:
             self.diffOutStream += "\r\n"
             for i in diffList:
