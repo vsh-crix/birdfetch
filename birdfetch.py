@@ -257,7 +257,7 @@ class ASGet:
     def bgpGenList(self, currentAS=None):
 
         if BGPQ3:
-            _asPrefixlist = subprocess.Popen(["/usr/local/bin/bgpq3", "-3", "-P", "-R 24", "-m 24", "-l%s" % currentAS,  currentAS], stdout = subprocess.PIPE)
+            _asPrefixlist = subprocess.Popen(["/usr/local/bin/bgpq3", "-3", "-P", "-R 24", "-l%s" % currentAS,  currentAS], stdout = subprocess.PIPE)
         else:
             _asPrefixlist = subprocess.Popen(["/usr/bin/bgpq", "-H", "-P", "-c", "-q", "-A", "-R 24", "-l%s" % currentAS,  currentAS], stdout = subprocess.PIPE)
         asPrefixlist = _asPrefixlist.stdout.read().splitlines()
