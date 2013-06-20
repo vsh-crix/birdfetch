@@ -308,23 +308,8 @@ class ASGet:
         except Exception as ex:
             print >>sys.stderr, "Unable to send email to %s. Error: %s" % (fieldRecipient, ex)
             sys.exit(-1)
+
             
-
-    def printPage(self):
-        if self.httpPage is None:        pass
-        else:
-            for i in self.httpLines:
-                print(i)
-
-
-    def printDownstreamList(self):
-        if len(self.downstreamList) == 0:
-            print ("No links")
-            return
-        
-        for _as in self.downstreamList:
-            print (_as)
-
 def main():
 
 
