@@ -309,6 +309,18 @@ class ASGet:
             print >>sys.stderr, "Unable to send email to %s. Error: %s" % (fieldRecipient, ex)
             sys.exit(-1)
 
+    def BirdReload(self):
+	
+	cmd = "/usr/sbin/birdc configure soft"                                                                                                                                 
+	subprocess.call(cmd, shell=True)                                                                                                                                                      
+	cmd = "/usr/sbin/birdc reload in all"                                                                                                                                 
+	subprocess.call(cmd, shell=True)                                                                                                                                                      
+	cmd = "/usr/sbin/birdc reload out all"                                                                                                                                 
+	subprocess.call(cmd, shell=True)                                                                                                                                                          
+
+
+
+
             
 def main():
 
@@ -352,6 +364,7 @@ def main():
         asObject.saveDownstreamList("%s/%s" % (curPathDir, asObject.asFile))
         asObject.diffCurrentVSOldAS("%s/%s" % (curPathDir, asObject.asFile), "%s/%s" % (oldPathDir, asObject.asFile))
         asObject.moveCurrentASToOld()
+	asObject.BirdReload()
 
 
 main()
