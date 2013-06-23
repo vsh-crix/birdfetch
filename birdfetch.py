@@ -11,6 +11,7 @@ Created on 14.06.2013
 import os, sys
 import difflib
 import time
+import traceback
 import email, mailer
 import telnetlib, subprocess
 
@@ -311,15 +312,14 @@ class ASGet:
 
     def BirdReload(self):
 	
-	cmd = "/usr/sbin/birdc configure soft"                                                                                                                                 
-	subprocess.call(cmd, shell=True)                                                                                                                                                      
-	cmd = "/usr/sbin/birdc reload in all"                                                                                                                                 
-	subprocess.call(cmd, shell=True)                                                                                                                                                      
-	cmd = "/usr/sbin/birdc reload out all"                                                                                                                                 
-	subprocess.call(cmd, shell=True)                                                                                                                                                          
-
-
-
+	try:	
+	    cmd = "/usr/sbin/birdc configure soft"                                                                                                                                 
+	    subprocess.call(cmd, shell=True)                                                                                                                                                      
+	    cmd = "/usr/sbin/birdc reload in all"                                                                                                                                 
+	    subprocess.call(cmd, shell=True)                                                                                                                                                      
+	    cmd = "/usr/sbin/birdc reload out all"                                                                                                                                 
+	    subprocess.call(cmd, shell=True)                                                                                                                                                          
+	except:	traceback.print_exc()  
 
             
 def main():
